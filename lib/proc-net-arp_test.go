@@ -27,5 +27,5 @@ func TestParse(t *testing.T) {
   stubData1 := strings.NewReader(s1)
   a, err := r.Parse(stubData1)
   assert.Nil(t, err)
-  assert.EqualValues(t, 6, a["proc.net.arp.size"])
+  assert.EqualValues(t, 6, a["size"])
 }

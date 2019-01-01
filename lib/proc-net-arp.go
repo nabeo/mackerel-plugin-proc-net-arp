@@ -55,7 +55,7 @@ func (r ArpPlugin) Parse(stat io.Reader) (map[string]float64, error) {
     if fields[0] == "IP" {
       continue
     }
-    data["proc.net.arp.size"]++
+    data["size"]++
   }
   return data, nil
 }
