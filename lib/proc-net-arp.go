@@ -5,6 +5,7 @@ import (
   "io"
   "bufio"
   "strings"
+  "flag"
 
   mp "github.com/mackerelio/go-mackerel-plugin"
 )
@@ -12,6 +13,7 @@ import (
 // ArpPlugin struct
 type ArpPlugin struct {
   Prefix string
+  Target string
 }
 
 // define graph
@@ -32,7 +34,7 @@ func (r ArpPlugin) GraphDefinition() map[string]mp.Graphs {
 
 // FetchMetrics : interface for go-mackerel-plugin interface
 func (r ArpPlugin) FetchMetrics() (map[string]float64, error) {
-  file, err := os.Open("/proc/net/arp")
+  file, err := os.Open(r.Target)
   if err != nil {
     return nil, err
   }
@@ -62,7 +64,11 @@ func (r ArpPlugin) Parse(stat io.Reader) (map[string]float64, error) {
 
 // Do : Do plugin
 func Do() {
+  optTarget := flag.String("target", "/proc/net/arp", "path to /proc/net/arp")
+  flag.Parse()
+
   var Arp ArpPlugin
+  Arp.Target = *optTarget
 
   helper := mp.NewMackerelPlugin(Arp)
 
